@@ -1,0 +1,70 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * { box-sizing: border-box; }
+
+  body {
+    @apply bg-dark-500 text-gray-100 font-sans;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { @apply bg-gray-700 rounded-full; }
+  ::-webkit-scrollbar-thumb:hover { @apply bg-gray-600; }
+}
+
+@layer components {
+  .card {
+    @apply bg-dark-400 border border-white/8 rounded-xl;
+  }
+  .card-hover {
+    @apply card transition-all duration-200 hover:border-white/14 hover:shadow-lg hover:shadow-primary-500/10 hover:-translate-y-0.5;
+  }
+  .btn-primary {
+    @apply flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-primary-500 to-indigo-600
+           text-white font-semibold text-sm transition-all duration-200
+           hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary-500/40
+           disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0;
+  }
+  .btn-ghost {
+    @apply flex items-center gap-2 px-5 py-2.5 rounded-xl border border-white/14
+           text-gray-400 font-semibold text-sm transition-all duration-200
+           hover:text-white hover:bg-white/5;
+  }
+  .input {
+    @apply w-full bg-dark-200 border border-white/8 rounded-xl px-4 py-2.5
+           text-gray-100 text-sm placeholder-gray-500 outline-none font-sans
+           transition-colors duration-200 focus:border-primary-500/60;
+  }
+  .label {
+    @apply block text-xs font-semibold tracking-widest uppercase text-gray-500 mb-2;
+  }
+  .skill-bar {
+    @apply h-1.5 rounded-full bg-dark-300 overflow-hidden;
+  }
+  .skill-fill {
+    @apply h-full rounded-full bg-gradient-to-r from-primary-500 to-teal-400 transition-all duration-700;
+  }
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold;
+  }
+  .section-title {
+    @apply text-xl font-bold tracking-tight text-gray-100;
+  }
+  .section-sub {
+    @apply text-sm text-gray-400 mt-1;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary-400 to-teal-400 bg-clip-text text-transparent;
+  }
+  .border-white\/8 { border-color: rgba(255,255,255,0.08); }
+  .border-white\/14 { border-color: rgba(255,255,255,0.14); }
+  .bg-white\/5 { background-color: rgba(255,255,255,0.05); }
+  .glow { box-shadow: 0 0 40px rgba(124,111,247,0.15); }
+}
