@@ -40,62 +40,56 @@ export default function ChatPage() {
 
   const sendMessage = async (text = input) => {
 
-    if (!text.trim() || loading) return
+  if (!text.trim() || loading) return
 
-    const userMsg = {
-      role: 'user',
-      content: text
-    }
+  const userMsg = {
+    role: 'user',
+    content: text
+  }
+
+  setMessages(prev => [...prev, userMsg])
+
+  setInput('')
+  setLoading(true)
+
+  try {
+
+    console.log("Sending request...")
+
+    const { data } = await api.post('/api/chat/', {
+      message: text,
+      history: messages,
+      portfolio_username: user.username
+    })
+
+    console.log("Response:", data)
 
     setMessages(prev => [
       ...prev,
-      userMsg
+      {
+        role: 'assistant',
+        content: data.reply
+      }
     ])
 
-    setInput('')
-    setLoading(true)
+  } catch (err) {
 
-    try {
+    console.log("ERROR:", err)
 
-      const { data } = await api.post(
-        '/api/chat/',
-        {
-          message: text,
-          history: messages,
-          portfolio_username: user.username
-        }
-      )
+    setMessages(prev => [
+      ...prev,
+      {
+        role: 'assistant',
+        content: "I'm having trouble connecting right now."
+      }
+    ])
 
-      setMessages(prev => [
-        ...prev,
-        {
-          role: 'assistant',
-          content: data.reply
-        }
-      ])
+  } finally {
 
-    } catch (err) {
-
-      toast.error(
-        err.response?.data?.detail ||
-        'AI failed to respond'
-      )
-
-      setMessages(prev => [
-        ...prev,
-        {
-          role: 'assistant',
-          content: "I'm having trouble connecting right now. Please try again."
-        }
-      ])
-
-    } finally {
-
-      setLoading(false)
-
-    }
+    setLoading(false)
 
   }
+}
 
 
   return (

@@ -90,80 +90,67 @@ Certifications:
 
 
 @router.post("/")
-async def chat(
-    request: ChatRequest,
-    db=Depends(get_db)
-):
+async def chat(request: ChatRequest, db=Depends(get_db)):
 
     user = await db.users.find_one({
-        "username":
-        request.portfolio_username.lower()
+        "username": request.portfolio_username.lower()
     })
 
     if not user:
-
         raise HTTPException(
             status_code=404,
             detail="Portfolio not found"
         )
 
     prompt = f"""
-{build_system_prompt(user)}
+Candidate: {user.get('name')}
+
+Skills:
+{', '.join([s['name'] for s in user.get('skills', [])][:10])}
+
+Projects:
+{', '.join([p['title'] for p in user.get('projects', [])][:5])}
+
+Experience:
+{', '.join([e['role'] for e in user.get('experience', [])][:5])}
 
 Question:
 {request.message}
 
-Answer:
+Answer briefly:
 """
-
+    
     try:
 
         response = requests.post(
             "http://localhost:11434/api/generate",
             json={
-                "model": "llama3.2",
+                "model": "llama3.2:latest",
                 "prompt": prompt,
                 "stream": False
-            }
+            },
+            timeout=120
         )
 
         result = response.json()
 
         reply = result.get(
-    "response",
-    "No response generated"
-)
+            "response",
+            "No response generated"
+        )
 
-        return {
-    "reply": reply
-}
-
-        # Save analytics
+        # Save chat analytics
         await db.chat_logs.insert_one({
-
-            "user_id":
-            str(user["_id"]),
-
-            "question":
-            request.message,
-
-            "answer":
-            reply,
-
-            "model":
-            "llama3.2",
-
-            "timestamp":
-            datetime.utcnow()
-
+            "user_id": str(user["_id"]),
+            "question": request.message,
+            "answer": reply,
+            "model": "llama3.2",
+            "timestamp": datetime.utcnow()
         })
 
         return {
-
             "reply": reply,
-
             "model": "llama3.2"
-
         }
 
     except Exception as e:
