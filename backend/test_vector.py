@@ -1,5 +1,6 @@
 from rag.pdf_loader import load_pdf_text
 from rag.chunker import split_text
+from rag.vector_store import store_chunks
 
 text = load_pdf_text(
     "uploads/resume.pdf"
@@ -7,8 +8,11 @@ text = load_pdf_text(
 
 chunks = split_text(text)
 
-print("Chunks:", len(chunks))
+count = store_chunks(
+    chunks,
+    "pratik"
+)
 
-print("\nFirst Chunk:\n")
-
-print(chunks[0])
+print(
+    f"Stored {count} chunks"
+)
