@@ -5,10 +5,13 @@ import aiofiles, os, uuid
 
 from uuid import uuid4
 
-
 from utils.database import get_db, settings
 from utils.auth import get_current_user
 from schemas.schemas import ProfileUpdateRequest
+
+from rag.pdf_loader import load_pdf_text
+from rag.chunker import split_text
+from rag.vector_store import store_chunks
 
 router = APIRouter()
 
@@ -86,46 +89,62 @@ async def upload_resume(
 ):
     if file.content_type not in ["application/pdf"]:
         raise HTTPException(400, "Only PDF files allowed")
-    size = len(await file.read())
-    if size > settings.upload_dir and size > 10 * 1024 * 1024:
+
+    content = await file.read()
+
+    if len(content) > 10 * 1024 * 1024:
         raise HTTPException(400, "File too large (max 10MB)")
-    await file.seek(0)
+
     filename = f"resume_{current_user['_id']}_{uuid.uuid4().hex[:8]}.pdf"
     path = os.path.join(settings.upload_dir, filename)
+
     async with aiofiles.open(path, "wb") as f:
-        content = await file.read()
         await f.write(content)
+
     url = f"{settings.api_url}/uploads/{filename}"
+
+    # ==========================
+    # RAG PROCESSING
+    # ==========================
+
+    text = load_pdf_text(path)
+    print("PDF loaded")
+    print("Text length:", len(text))
+
+    chunks = split_text(text)
+    print("Chunks created:", len(chunks))
+
+    stored = store_chunks(chunks, current_user["username"])
+    print("Stored:", stored)
+
+    # ==========================
+    # UPDATE DATABASE
+    # ==========================
+
     await db.users.update_one(
         {"_id": current_user["_id"]},
-        {"$set": {"resume_url": url, "updated_at": datetime.utcnow()}}
+        {
+            "$set": {
+                "resume_url": url,
+                "updated_at": datetime.utcnow()
+            }
+        }
     )
-    return {"resume_url": url}
+
+    return {
+        "resume_url": url,
+        "chunks_stored": len(chunks)
+    }
+
 
 @router.post("/upload-resume")
-async def upload_resume(
-    file: UploadFile = File(...)
+async def upload_resume_legacy(
+    file: UploadFile = File(...),
+    current_user=Depends(get_current_user),
+    db=Depends(get_db)
 ):
-
-    try:
-
-        os.makedirs("uploads", exist_ok=True)
-
-        filename = f"{uuid4()}_{file.filename}"
-
-        filepath = f"uploads/{filename}"
-
-        with open(filepath, "wb") as buffer:
-            buffer.write(await file.read())
-
-        return {
-            "resume_url":
-            f"http://127.0.0.1:8000/uploads/{filename}"
-        }
-
-    except Exception as e:
-
-        raise HTTPException(
-            status_code=500,
-            detail=str(e)
-        )
+    return await upload_resume(
+        file=file,
+        current_user=current_user,
+        db=db
+    )

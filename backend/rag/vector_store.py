@@ -34,9 +34,10 @@ def store_chunks(chunks, username):
             embedding
         )
 
+        from uuid import uuid4
         ids.append(
-            f"{username}_{i}"
-        )
+          f"{username}_{uuid4()}"
+)
 
     collection.add(
         documents=documents,

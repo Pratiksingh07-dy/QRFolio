@@ -1,8 +1,8 @@
 from fastapi import APIRouter, HTTPException, Depends
 from utils.database import get_db
 from schemas.schemas import ChatRequest
-import requests
 from datetime import datetime
+from rag.qa_chain import ask_resume
 
 router = APIRouter()
 
@@ -102,60 +102,24 @@ async def chat(request: ChatRequest, db=Depends(get_db)):
             detail="Portfolio not found"
         )
 
-    prompt = f"""
-Candidate: {user.get('name')}
-
-Skills:
-{', '.join([s['name'] for s in user.get('skills', [])][:10])}
-
-Projects:
-{', '.join([p['title'] for p in user.get('projects', [])][:5])}
-
-Experience:
-{', '.join([e['role'] for e in user.get('experience', [])][:5])}
-
-Question:
-{request.message}
-
-Answer briefly:
-"""
-    
     try:
+        reply = ask_resume(request.message)
 
-        response = requests.post(
-            "http://localhost:11434/api/generate",
-            json={
-                "model": "llama3.2:latest",
-                "prompt": prompt,
-                "stream": False
-            },
-            timeout=120
-        )
-
-        result = response.json()
-
-        reply = result.get(
-            "response",
-            "No response generated"
-        )
-
-        # Save chat analytics
         await db.chat_logs.insert_one({
             "user_id": str(user["_id"]),
             "question": request.message,
             "answer": reply,
-            "model": "llama3.2",
+            "model": "rag-llama3.2",
             "timestamp": datetime.utcnow()
         })
 
         return {
             "reply": reply,
-            "model": "llama3.2"
+            "model": "rag-llama3.2"
         }
 
     except Exception as e:
-
         raise HTTPException(
             status_code=500,
-            detail=f"Ollama error: {str(e)}"
+            detail=f"RAG error: {str(e)}"
         )
