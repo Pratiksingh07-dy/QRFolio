@@ -13,8 +13,7 @@ collection = client.get_collection(
     "resumes"
 )
 
-
-def retrieve_chunks(query, top_k=3):
+def retrieve_chunks(query, username, top_k=3):
 
     query_embedding = model.encode(
         query
@@ -22,7 +21,10 @@ def retrieve_chunks(query, top_k=3):
 
     results = collection.query(
         query_embeddings=[query_embedding],
-        n_results=top_k
+        n_results=top_k,
+        where={
+            "username": username
+        }
     )
 
     return results["documents"][0]

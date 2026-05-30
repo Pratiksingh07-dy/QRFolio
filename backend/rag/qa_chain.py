@@ -3,10 +3,11 @@ import requests
 from rag.retriever import retrieve_chunks
 
 
-def ask_resume(question):
+def ask_resume(question, username):
 
     chunks = retrieve_chunks(
-        question
+        question,
+        username
     )
 
     context = "\n\n".join(

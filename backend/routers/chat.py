@@ -103,7 +103,10 @@ async def chat(request: ChatRequest, db=Depends(get_db)):
         )
 
     try:
-        reply = ask_resume(request.message)
+        reply = ask_resume(
+            request.message,
+            request.portfolio_username.lower()
+        )
 
         await db.chat_logs.insert_one({
             "user_id": str(user["_id"]),
