@@ -79,3 +79,5 @@ build/
 
 
 vector_db/
+uploads/
+.env
