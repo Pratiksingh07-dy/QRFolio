@@ -112,17 +112,23 @@ async def chat(request: ChatRequest, db=Depends(get_db)):
             "user_id": str(user["_id"]),
             "question": request.message,
             "answer": reply,
-            "model": "rag-llama3.2",
+            "model": "rag-groq-llama3.1",
             "timestamp": datetime.utcnow()
         })
 
         return {
             "reply": reply,
-            "model": "rag-llama3.2"
+            "model": "groq-llama-3.1-8b"
         }
 
     except Exception as e:
+        import traceback
+
+        print("\n\n========== CHAT ERROR ==========")
+        traceback.print_exc()
+        print("================================\n\n")
+
         raise HTTPException(
             status_code=500,
-            detail=f"RAG error: {str(e)}"
+            detail=str(e)
         )

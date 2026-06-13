@@ -106,7 +106,7 @@ export default function ChatPage() {
           </h1>
 
           <p className="section-sub">
-            Powered by Ollama (Llama 3.2) • Ask anything about your portfolio
+            AI-Powered Portfolio Assistant • Ask anything about your portfolio
           </p>
 
         </div>

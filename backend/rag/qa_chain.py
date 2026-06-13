@@ -1,6 +1,15 @@
-import requests
+from langchain_groq import ChatGroq
+from dotenv import load_dotenv
+import os
 
 from rag.retriever import retrieve_chunks
+
+load_dotenv()
+
+llm = ChatGroq(
+    model="llama-3.1-8b-instant",
+    api_key=os.getenv("GROQ_API_KEY")
+)
 
 
 def ask_resume(question, username):
@@ -10,9 +19,7 @@ def ask_resume(question, username):
         username
     )
 
-    context = "\n\n".join(
-        chunks
-    )
+    context = "\n\n".join(chunks)
 
     prompt = f"""
 You are an AI Resume Assistant.
@@ -41,21 +48,6 @@ QUESTION:
 ANSWER:
 """
 
-    response = requests.post(
+    response = llm.invoke(prompt)
 
-        "http://localhost:11434/api/generate",
-
-        json={
-            "model": "llama3.2:latest",
-            "prompt": prompt,
-            "stream": False
-        }
-
-    )
-
-    result = response.json()
-
-    return result.get(
-    "response",
-    "No response generated"
-)
+    return response.content

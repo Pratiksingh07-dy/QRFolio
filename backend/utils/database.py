@@ -15,6 +15,7 @@ class Settings(BaseSettings):
     app_url: str = os.getenv("APP_URL", "http://localhost:3000")
     api_url: str = os.getenv("API_URL", "http://localhost:8000")
     upload_dir: str = os.getenv("UPLOAD_DIR", "uploads")
+    groq_api_key: str = os.getenv("GROQ_API_KEY", "")
 
     class Config:
         env_file = ".env"
