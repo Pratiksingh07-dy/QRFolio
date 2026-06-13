@@ -4,7 +4,7 @@
 
 ### AI-Powered Smart Portfolio, ATS Analyzer & RAG Resume Assistant
 
-<p>AI-powered portfolio platform featuring QR sharing, ATS resume analysis, analytics tracking, and a Retrieval-Augmented Generation (RAG) assistant built with LangChain, ChromaDB, Sentence Transformers, Ollama, and Llama 3.2.</p>
+<p>AI-powered portfolio platform featuring QR sharing, ATS resume analysis, analytics tracking, and a Retrieval-Augmented Generation (RAG) assistant built with LangChain, ChromaDB, Sentence Transformers, Groq, and Llama 3.1.</p>
 
 ![React](https://img.shields.io/badge/React-18-blue?style=flat-square&logo=react)
 ![FastAPI](https://img.shields.io/badge/FastAPI-Backend-green?style=flat-square&logo=fastapi)
@@ -12,8 +12,8 @@
 ![Python](https://img.shields.io/badge/Python-3.10-yellow?style=flat-square&logo=python)
 ![LangChain](https://img.shields.io/badge/LangChain-RAG-orange?style=flat-square)
 ![ChromaDB](https://img.shields.io/badge/ChromaDB-VectorDB-purple?style=flat-square)
-![Ollama](https://img.shields.io/badge/Ollama-LLM-orange?style=flat-square)
-![Llama](https://img.shields.io/badge/Llama_3.2-AI-red?style=flat-square)
+![Groq](https://img.shields.io/badge/Groq-LLM-orange?style=flat-square)
+![Llama](https://img.shields.io/badge/Llama_3.1-AI-red?style=flat-square)
 
 </div>
 
@@ -70,7 +70,7 @@ Instead of static resumes, users can create intelligent portfolios enhanced with
 
 ### 🤖 AI Portfolio Assistant
 
-Powered by **Ollama + Llama 3.2**, the assistant can answer:
+Powered by **Groq + Llama 3.1**, the assistant can answer:
 
 - *What skills does this candidate have?*
 - *What projects has the candidate built?*
@@ -91,7 +91,7 @@ Resume Upload
      → Sentence Transformer Embeddings
      → ChromaDB Vector Storage
      → Semantic Retrieval
-     → Llama 3.2 Response Generation
+     → Groq Llama 3.1 Response Generation
 ```
 
 **Benefits:**
@@ -99,6 +99,8 @@ Resume Upload
 - Reduced hallucinations
 - Semantic search over resume content
 - User-specific retrieval using metadata filtering
+
+> The RAG pipeline uses Sentence Transformers for embeddings, ChromaDB for vector storage, LangChain for retrieval orchestration, and Groq-hosted Llama models for answer generation.
 
 ---
 
@@ -139,10 +141,10 @@ Backend (FastAPI)
 MongoDB  ATS  AI
                │
                ▼
-            Ollama
+            Groq API
                │
                ▼
-           Llama 3.2
+           Llama 3.1
 ```
 
 ### 🧠 RAG Architecture
@@ -166,7 +168,7 @@ ChromaDB
 Retriever
      │
      ▼
-Llama 3.2 (Ollama)
+Llama 3.1 (Groq)
      │
      ▼
 AI Response
@@ -182,7 +184,7 @@ AI Response
 | **Backend** | FastAPI, Python, Uvicorn, Pydantic |
 | **Database** | MongoDB Atlas, PyMongo |
 | **Authentication** | JWT, Passlib, Password Hashing |
-| **AI / ML** | Ollama, Llama 3.2, LangChain, ChromaDB, Sentence Transformers, RAG, Prompt Engineering |
+| **AI / ML** | Groq, Llama 3.1, LangChain, ChromaDB, Sentence Transformers, RAG, Prompt Engineering |
 | **File Processing** | PyMuPDF (fitz), LangChain Text Splitters, FastAPI UploadFile |
 
 ---
@@ -312,24 +314,9 @@ npm run dev
 
 > Frontend running at: `http://localhost:5173`
 
-### 4. Ollama Setup
+### 4. Run the Full System
 
-```bash
-# Install Ollama from https://ollama.com/download
-
-# Pull the Llama 3.2 model
-ollama pull llama3.2
-
-# Start Ollama server
-ollama serve
-
-# Verify it's running
-curl http://localhost:11434/api/tags
-```
-
-### 5. Run the Full System
-
-Open three terminals:
+Open two terminals:
 
 ```bash
 # Terminal 1 — Backend
@@ -337,9 +324,6 @@ uvicorn main:app --reload
 
 # Terminal 2 — Frontend
 npm run dev
-
-# Terminal 3 — Ollama
-ollama serve
 ```
 
 ---
@@ -373,7 +357,7 @@ JWT_ALGORITHM=HS256
 
 API_URL=http://localhost:8000
 UPLOAD_DIR=uploads
-OLLAMA_URL=http://localhost:11434
+GROQ_API_KEY=your_groq_api_key
 ```
 
 ### Frontend (`frontend/.env`)
@@ -387,11 +371,11 @@ VITE_API_URL=http://localhost:8000
 ## 🌍 Deployment Architecture
 
 ```
-Frontend  →  Vercel
-Backend   →  Render
-Database  →  MongoDB Atlas
-AI Model  →  Ollama Server (Self-Hosted)
-LLM       →  Llama 3.2
+Frontend    →  Vercel
+Backend     →  Render
+Database    →  MongoDB Atlas
+AI Provider →  Groq
+LLM         →  Llama 3.1
 ```
 
 ---
@@ -403,7 +387,7 @@ LLM       →  Llama 3.2
 - MongoDB integration with PyMongo
 - Retrieval-Augmented Generation (RAG) pipeline
 - Vector databases & semantic search with ChromaDB
-- Local LLM deployment with Ollama
+- LLM integration using Groq API
 - Resume-aware AI systems & Prompt Engineering
 
 ---
@@ -411,7 +395,6 @@ LLM       →  Llama 3.2
 ## 🔮 Future Scope
 
 - [ ] Conversational Memory for AI Chat
-- [ ] Source Citations in AI Responses
 - [ ] Multi-Document Retrieval
 - [ ] Hybrid Search (BM25 + Dense)
 - [ ] Re-ranking Models
