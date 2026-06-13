@@ -1,43 +1,81 @@
+# =========================
 # Python
+# =========================
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
 .Python
+
+# Virtual Environments
 venv/
 env/
 ENV/
-.venv
+.venv/
 
-# Environment
+# =========================
+# Environment Variables
+# =========================
 .env
-.env.local
+.env.*
+!.env.example
 
-# Uploads
+backend/.env
+frontend/.env
+
+# =========================
+# Uploaded Files
+# =========================
 uploads/
-*.png
-*.jpg
-*.jpeg
-*.pdf
+backend/uploads/
 
+# Vector Database
+vector_db/
+backend/vector_db/
+
+# ChromaDB
+chroma/
+chromadb/
+
+# =========================
 # IDE
+# =========================
 .vscode/
 .idea/
 *.swp
 *.swo
 
-# OS
+# =========================
+# OS Files
+# =========================
 .DS_Store
 Thumbs.db
 
+# =========================
 # Logs
+# =========================
 *.log
 
+# =========================
 # Testing
+# =========================
 .pytest_cache/
 .coverage
 htmlcov/
 
-.env
-backend/.env
-frontend/.env  
+# =========================
+# Node / React
+# =========================
+node_modules/
+dist/
+build/
+
+# =========================
+# Generated Files
+# =========================
+*.sqlite3
+*.db
+
+
+
+vector_db/
