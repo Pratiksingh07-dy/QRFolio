@@ -61,10 +61,10 @@ app.include_router(
     tags=["QR"]
 )
 
-#app.include_router(
-##    prefix="/api/chat",
-#   tags=["AI Chat"]
-#)
+app.include_router(
+    prefix="/api/chat",
+    tags=["AI Chat"]
+)
 
 app.include_router(
     ats.router,
