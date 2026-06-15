@@ -1,11 +1,11 @@
 from langchain_groq import ChatGroq
 from dotenv import load_dotenv
 import os
+
 from rag.retriever import retrieve_chunks
 
 load_dotenv()
 
-# Don't initialize at module level
 _llm = None
 
 def get_llm():
@@ -17,23 +17,45 @@ def get_llm():
         )
     return _llm
 
+
 def ask_resume(question, username):
+
     llm = get_llm()
-    chunks = retrieve_chunks(question, username)
+
+    chunks = retrieve_chunks(
+        question,
+        username
+    )
+
     context = "\n\n".join(chunks)
 
     prompt = f"""
 You are an AI Resume Assistant.
+
 Answer ONLY using the context below.
-If the answer is not present, say: "That information is not available in the resume."
+
+If the answer is not present in the context,
+say:
+
+"That information is not available in the resume."
+
+====================
 
 CONTEXT:
+
 {context}
 
+====================
+
 QUESTION:
+
 {question}
+
+====================
 
 ANSWER:
 """
+
     response = llm.invoke(prompt)
+
     return response.content

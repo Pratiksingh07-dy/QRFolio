@@ -19,14 +19,21 @@ def get_collection():
         _collection = _client.get_or_create_collection(name="resumes")
     return _collection
 
+
 def store_chunks(chunks, username):
+
     model = get_model()
     collection = get_collection()
 
-    documents, embeddings, ids, metadatas = [], [], [], []
+    documents = []
+    embeddings = []
+    ids = []
+    metadatas = []
 
-    for chunk in chunks:
+    for i, chunk in enumerate(chunks):
+
         embedding = model.encode(chunk).tolist()
+
         documents.append(chunk)
         embeddings.append(embedding)
         metadatas.append({"username": username})
