@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Depends, UploadFile, File, Form
 from utils.database import get_db, settings
 from schemas.schemas import ATSRequest
-import anthropic
+from groq import Groq
 import json
 import re
 import fitz
@@ -137,7 +137,7 @@ async def analyze_resume(
     db=Depends(get_db)
 ):
 
-    if not settings.anthropic_api_key:
+    if not settings.groq_api_key:
 
         raise HTTPException(
             status_code=503,
@@ -158,21 +158,21 @@ async def analyze_resume(
             detail="User not found"
         )
 
-    client = anthropic.Anthropic(
+    client = Groq(
 
-        api_key=settings.anthropic_api_key
+        api_key=settings.groq_api_key
 
     )
 
-    response = client.messages.create(
+    response = client.chat.completions.create(
 
-        model="claude-sonnet-4-20250514",
+        model="llama-3.1-8b-instant",
 
         max_tokens=1000,
 
         messages=[{
 
-            "role":"user",
+            "role": "user",
 
             "content":
             build_ats_prompt(
@@ -183,7 +183,7 @@ async def analyze_resume(
         }]
     )
 
-    raw = response.content[0].text.strip()
+    raw = response.choices[0].message.content.strip()
 
     raw = re.sub(
         r"```json|```",
