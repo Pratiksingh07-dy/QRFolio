@@ -82,10 +82,14 @@ app.include_router(
 
 
 # Database lifecycle
-app.add_event_handler(
-    "startup",
-    connect_db
-)
+@app.on_event("startup")
+async def startup():
+    try:
+        await connect_db()
+    except Exception as e:
+        import traceback
+        print("❌ STARTUP ERROR:", e)
+        traceback.print_exc()
 
 app.add_event_handler(
     "shutdown",
