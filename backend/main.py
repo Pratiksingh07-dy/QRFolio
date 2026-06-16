@@ -64,6 +64,7 @@ app.include_router(
 )
 
 app.include_router(
+    chat.router,          # ← this was missing!
     prefix="/api/chat",
     tags=["AI Chat"]
 )
@@ -101,8 +102,8 @@ app.add_event_handler(
 async def root():
 
     return {
-        "message":"QRFolio API is running",
-        "docs":"/docs"
+        "message": "QRFolio API is running",
+        "docs": "/docs"
     }
 
 
@@ -110,5 +111,5 @@ async def root():
 async def health():
 
     return {
-        "status":"ok"
+        "status": "ok"
     }
