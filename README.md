@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🚀 QRFolio
+#  QRFolio
 
 ### AI-Powered Smart Portfolio, ATS Analyzer & RAG Resume Assistant
 
