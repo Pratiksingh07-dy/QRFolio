@@ -19,25 +19,25 @@
 
 ---
 
-## 📖 Overview
+##  Overview
 
 QRFolio is a modern AI-powered digital portfolio platform that transforms traditional resumes into **interactive, recruiter-friendly experiences**.
 
 Instead of static resumes, users can create intelligent portfolios enhanced with:
 
-- 🤖 AI Recruiter Assistant
-- 📊 Resume ATS Analysis
-- 🔳 QR Code Portfolio Sharing
-- 📄 Resume Upload System
-- 📈 Portfolio Analytics
-- 💼 Dynamic Project Showcases
-- 🧠 Resume-Aware RAG Assistant
+-  AI Recruiter Assistant
+-  Resume ATS Analysis
+-  QR Code Portfolio Sharing
+-  Resume Upload System
+-  Portfolio Analytics
+-  Dynamic Project Showcases
+-  Resume-Aware RAG Assistant
 
 ---
 
-## ✨ Features
+##  Features
 
-### 👤 Smart Portfolio System
+###  Smart Portfolio System
 
 - Dynamic Portfolio Generation
 - Skills Management
@@ -49,7 +49,7 @@ Instead of static resumes, users can create intelligent portfolios enhanced with
 
 ---
 
-### 📄 Resume Upload System
+###  Resume Upload System
 
 - PDF Resume Upload & Storage
 - Resume Download Support
@@ -58,7 +58,7 @@ Instead of static resumes, users can create intelligent portfolios enhanced with
 
 ---
 
-### 🔳 QR Portfolio Sharing
+###  QR Portfolio Sharing
 
 - Generate QR Codes for your portfolio
 - Download QR as PNG
@@ -68,7 +68,7 @@ Instead of static resumes, users can create intelligent portfolios enhanced with
 
 ---
 
-### 🤖 AI Portfolio Assistant
+###  AI Portfolio Assistant
 
 Powered by **Groq + Llama 3.1**, the assistant can answer:
 
@@ -80,7 +80,7 @@ Powered by **Groq + Llama 3.1**, the assistant can answer:
 
 ---
 
-### 🧠 Retrieval-Augmented Generation (RAG)
+###  Retrieval-Augmented Generation (RAG)
 
 QRFolio includes a complete RAG pipeline that allows the AI assistant to retrieve information directly from uploaded resumes before generating responses.
 
@@ -104,7 +104,7 @@ Resume Upload
 
 ---
 
-### 📊 ATS Resume Analyzer
+###  ATS Resume Analyzer
 
 - ATS Score Generation
 - Resume–Job Description Matching
@@ -115,7 +115,7 @@ Resume Upload
 
 ---
 
-### 📈 Analytics Dashboard
+###  Analytics Dashboard
 
 Tracks:
 - Portfolio Views
@@ -126,7 +126,7 @@ Tracks:
 
 ---
 
-## 🏗 Architecture
+##  Architecture
 
 ### High-Level Architecture
 
@@ -147,7 +147,7 @@ MongoDB  ATS  AI
            Llama 3.1
 ```
 
-### 🧠 RAG Architecture
+###  RAG Architecture
 
 ```
 Resume PDF
@@ -189,7 +189,7 @@ AI Response
 
 ---
 
-## 📂 Project Structure
+##  Project Structure
 
 ```
 qrfolio/
@@ -237,7 +237,7 @@ qrfolio/
 
 ---
 
-## 🔐 Authentication Flow
+##  Authentication Flow
 
 ```
 Register → Hash Password → Store in MongoDB
@@ -247,7 +247,7 @@ Login → Verify Password → Generate JWT → Access Protected Routes
 
 ---
 
-## 📡 API Documentation
+##  API Documentation
 
 Swagger UI available at: `http://localhost:8000/docs`
 
@@ -274,7 +274,7 @@ Swagger UI available at: `http://localhost:8000/docs`
 
 ---
 
-## ⚙️ Installation
+##  Installation
 
 ### 1. Clone Repository
 
@@ -328,7 +328,7 @@ npm run dev
 
 ---
 
-## 🧪 Testing the RAG Pipeline
+##  Testing the RAG Pipeline
 
 1. Upload your resume (PDF) via the dashboard
 2. Verify chunks are stored in ChromaDB
@@ -344,7 +344,7 @@ What certifications does the candidate hold?
 
 ---
 
-## 🔐 Environment Variables
+##  Environment Variables
 
 ### Backend (`backend/.env`)
 
@@ -368,7 +368,7 @@ VITE_API_URL=http://localhost:8000
 
 ---
 
-## 🌍 Deployment Architecture
+##  Deployment Architecture
 
 ```
 Frontend    →  Vercel
@@ -380,7 +380,7 @@ LLM         →  Llama 3.1
 
 ---
 
-## 📚 Key Learnings
+##  Key Learnings
 
 - Full-stack application development with React + FastAPI
 - JWT Authentication & secure routes
@@ -406,7 +406,7 @@ LLM         →  Llama 3.1
 
 ---
 
-## 👨‍💻 Author
+##  Author
 
 **Pratik Singh**  
 Computer Science Engineering (AI & ML)  
